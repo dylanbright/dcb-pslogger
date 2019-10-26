@@ -16,8 +16,8 @@ $storageContainerName ='logs'
 #$storageAccountkey = (Get-AzStorageAccountKey -ResourceGroupName $storageAccountResourceGroupName -Name $storageAccountName).value[0]
 $storageAccountkey = $azStorageKey
 $mylogger = [pslogger]::new($pslogname,$saveMode,$displayMessages,$outputpath,$outputFilePrefix,$ToAzure,$storageAccountName,$storageContainerName,$storageAccountkey)
-$mylogger.addMessage('mysource','test message')
-$mylogger.addMessage('newsource','mymessage')
+$mylogger.addMessage('azuredevops','test message')
+$mylogger.addMessage('azuredevops','mymessage')
 $mylogger.LogMessages
 #$mylogger.saveLog()
 $mylogger.exportToAzure()
