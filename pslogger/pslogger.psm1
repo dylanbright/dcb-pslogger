@@ -14,6 +14,7 @@ class psLogger {
     #TO DO Add error handling to the azure stuff and other things that could fail
     [string]$pslogname
     [string]$saveMode
+    [boolean]$displayMessages
     [string]$outputPath
     [string]$outputFilePrefix
     $LogMessages
@@ -25,17 +26,19 @@ class psLogger {
     [string]$lastoutputfilename
 
     psLogger(
-            $pslogname,
-            $saveMode, #add enum for this.  Options Append,aggregate
-            $outputpath,
-            $outputFilePrefix,
-            $ToAzure,
-            $storageAccountName,
-            $storageAccountContainer,
-            $storageAccountKey)
+            [string]$pslogname,
+            [string]$saveMode, #add enum for this.  Options Append,aggregate
+            [boolean]$displayMessages,
+            [string]$outputpath,
+            [string]$outputFilePrefix,
+            [string]$ToAzure,
+            [string]$storageAccountName,
+            [string]$storageAccountContainer,
+            [string]$storageAccountKey)
              {
                 $this.pslogname = $pslogname
                 $this.saveMode = $saveMode
+                $this.displayMessages = $displayMessages
                 $this.outputPath = $outputpath
                 $this.outputFilePrefix = $outputFilePrefix
                 $this.ToAzure = $ToAzure
@@ -53,10 +56,13 @@ class psLogger {
         $filename = $this.outputFilePrefix + '_' + (get-date -Format FileDateTime) + '.csv'
         $this.lastoutputfilename = $filename
         $this.lastoutputfilepath = ($this.outputPath + "/" + $filename)
-        $this.addMessage('pslogger',"Created log file at $this.lastoutputfilepath")
+        $this.addMessage('pslogger',"Created log file at" + $this.lastoutputfilepath)
     }         
     addMessage($source,$message){
         $newLogEntry = [psLogEntry]::new($source,$message)
+        if ($this.displayMessages){
+            write-host $newLogEntry.datetime $newLogEntry.source $newLogEntry.Message
+        }
         $this.LogMessages += $newLogEntry
         [psLogEntry]::new($source,$message)
         switch ($this.saveMode){
