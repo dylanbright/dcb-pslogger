@@ -1,0 +1,5 @@
+"datetime","source","Message"
+"10/26/19 6:58:21 AM","pslogger","Created log file at psLogger.lastoutputfilepath"
+"10/26/19 6:58:21 AM","mysource","test message"
+"10/26/19 6:58:21 AM","newsource","mymessage"
+"10/26/19 6:58:21 AM","pslogger","uploading logtestLog_20191026T0658211943.csv to storage account:dcbscriptsstor001"
