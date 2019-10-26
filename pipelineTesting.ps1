@@ -2,6 +2,7 @@
 
 using module "./dcb-pslogger/drop/pslogger/pslogger.psm1"
 param ($azStorageKey)
+Install-Module Az -Force  #get the latest az module
 #using module @{ModuleName="$(Build.ArtifactStagingDirectory)/pslogger/pslogger.psm1";ModuleVersion="0.0.2"}
 $pslogname = 'testLogging'
 $saveMode ='append' #add enum for this.  Options Append,aggregate
