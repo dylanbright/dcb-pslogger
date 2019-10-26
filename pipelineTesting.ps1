@@ -1,7 +1,7 @@
 #Example use of the pslogger class.
 
-#using module './pslogger/pslogger.psm1'lo  
-using module @{ModuleName="$(Build.ArtifactStagingDirectory)/pslogger/pslogger.psm1";ModuleVersion='0.0.2'}
+using module '$(Build.ArtifactStagingDirectory)/pslogger/pslogger.psm1'
+#using module @{ModuleName="$(Build.ArtifactStagingDirectory)/pslogger/pslogger.psm1";ModuleVersion="0.0.2"}
 $pslogname = 'testLogging'
 $saveMode ='append' #add enum for this.  Options Append,aggregate
 $displayMessages = $true
