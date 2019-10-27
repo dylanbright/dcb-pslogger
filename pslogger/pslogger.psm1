@@ -2,21 +2,20 @@ class psLogEntry {
     [datetime]$datetime
     [string]$source
     [string]$Message
-    [string] $dateTimeFormat
+    # [string] $dateTimeFormat
     psLogEntry ([string]$source,[string]$message){
         $this.source = $source
         $this.Message = $message
         $this.datetime = Get-Date
     }
-    psLogEntry ([string]$source,[string]$message,[string]$datetimeformat){
-        $this.source = $source
-        $this.Message = $message
-        $this.datetime = Get-Date -Format $datetimeformat
-    }
+    # psLogEntry ([string]$source,[string]$message,[string]$datetimeformat){
+    #     $this.source = $source
+    #     $this.Message = $message
+    #     $this.datetime = Get-Date -Format $datetimeformat
+    # }
 }
 
 class psLogger {
-    #TO DO ADD CHATTY MODE TO WRITE HOST WHEN LOG MESSAGE IS ADDED
     #TO DO Add error handling to the azure stuff and other things that could fail
     [string]$pslogname
     [string]$saveMode
@@ -110,7 +109,14 @@ class psLogger {
         If (!($this.saveMode -eq 'append')){
             $this.saveLog()
         }
-        $context = New-AzStorageContext -StorageAccountName $this.storageAccountName -StorageAccountKey $this.storageAccountKey
+        Try {
+            $context = New-AzStorageContext -StorageAccountName $this.storageAccountName -StorageAccountKey $this.storageAccountKey -ErrorAction Stop
+        } catch {
+            $this.addMessage('pslogger','error creating storage context.  Key or storage account may be invalid.')
+            
+        }
+
+
         #If the container does not exist, create it
         $storContainer = Get-AzStorageContainer -Name $this.storageAccountContainer -Context $context
         if (!($storContainer)){
