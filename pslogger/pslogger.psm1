@@ -30,8 +30,8 @@ class psLogger {
     [string]$storageAccountKey
     [string]$lastoutputfilepath
     [string]$lastoutputfilename
-
-    psLogger(
+    #Constructor with storage account logging.
+    psLogger(  
             [string]$pslogname,
             [string]$saveMode, #add enum for this.  Options Append,aggregate
             [boolean]$displayMessages,
@@ -56,8 +56,26 @@ class psLogger {
                     $this.initializeLogFile()
                 }
              }
-    #add overload constructors for local storage only
-    #add method for adding log messages
+    #constructor for local storage only
+    psLogger(  
+            [string]$pslogname,
+            [string]$saveMode, #add enum for this.  Options Append,aggregate
+            [boolean]$displayMessages,
+            [string]$outputpath,
+            [string]$outputFilePrefix)
+             {
+                $this.pslogname = $pslogname
+                $this.saveMode = $saveMode
+                $this.displayMessages = $displayMessages
+                $this.outputPath = $outputpath
+                $this.outputFilePrefix = $outputFilePrefix
+                $this.ToAzure = $false
+                $this.LogMessages = @()
+                if ($saveMode -eq 'append'){
+                    $this.initializeLogFile()
+                }
+             }
+
     initializeLogFile (){
         $filename = $this.outputFilePrefix + '_' + (get-date -Format FileDateTime) + '.csv'
         $this.lastoutputfilename = $filename
