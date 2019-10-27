@@ -2,10 +2,16 @@ class psLogEntry {
     [datetime]$datetime
     [string]$source
     [string]$Message
+    [string] $dateTimeFormat
     psLogEntry ([string]$source,[string]$message){
         $this.source = $source
         $this.Message = $message
         $this.datetime = Get-Date
+    }
+    psLogEntry ([string]$source,[string]$message,[string]$datetimeformat){
+        $this.source = $source
+        $this.Message = $message
+        $this.datetime = Get-Date -Format $datetimeformat
     }
 }
 
