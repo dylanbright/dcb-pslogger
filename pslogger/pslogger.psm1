@@ -111,22 +111,18 @@ class psLogger {
         If (!($this.saveMode -eq 'append')){
             $this.saveLog()
         }
-        #Try {
-            $context = New-AzStorageContext -StorageAccountName $this.storageAccountName -StorageAccountKey $this.storageAccountKey -ErrorAction Stop
-       # } catch {
-        #    $this.addMessage('pslogger','error creating storage context.  Key or storage account may be invalid.')
-            
-       # }
 
-
-        #If the container does not exist, create it
-        $storContainer = Get-AzStorageContainer -Name $this.storageAccountContainer -Context $context
-        if (!($storContainer)){
-            $storContainer = New-AzStorageContainer -Context $context -Name $this.storageAccountContainer
+        $context = New-AzStorageContext -StorageAccountName $this.storageAccountName -StorageAccountKey $this.storageAccountKey
+        if ($context){
+            $storContainer = Get-AzStorageContainer -Name $this.storageAccountContainer -Context $context
+            if (!($storContainer)){
+                $storContainer = New-AzStorageContainer -Context $context -Name $this.storageAccountContainer
+            }
+            Set-AzStorageBlobContent -File $this.lastoutputfilepath -Container $this.storageAccountContainer -Blob $this.lastoutputfilename -Context $context
+            return (Get-AzStorageBlob -Context $context -Container $this.storageAccountContainer -Blob $this.lastoutputfilename).Name  
+        } else {
+            $this.addMessage('pslogger','Error contacting azure storage.')
         }
-        Set-AzStorageBlobContent -File $this.lastoutputfilepath -Container $this.storageAccountContainer -Blob $this.lastoutputfilename -Context $context
-        return (Get-AzStorageBlob -Context $context -Container $this.storageAccountContainer -Blob $this.lastoutputfilename).Name
-        
     }
 }
 
