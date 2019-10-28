@@ -7,7 +7,7 @@ class psLogEntry {
         $this.datetime = $datetime
         $this.source = $source
         $this.Message = $message
-        $this.datetime = Get-Date
+        #$this.datetime = Get-Date
     }
     # psLogEntry ([string]$source,[string]$message,[string]$datetimeformat){
     #     $this.source = $source
