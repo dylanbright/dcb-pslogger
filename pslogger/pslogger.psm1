@@ -111,12 +111,12 @@ class psLogger {
         If (!($this.saveMode -eq 'append')){
             $this.saveLog()
         }
-        Try {
+        #Try {
             $context = New-AzStorageContext -StorageAccountName $this.storageAccountName -StorageAccountKey $this.storageAccountKey -ErrorAction Stop
-        } catch {
-            $this.addMessage('pslogger','error creating storage context.  Key or storage account may be invalid.')
+       # } catch {
+        #    $this.addMessage('pslogger','error creating storage context.  Key or storage account may be invalid.')
             
-        }
+       # }
 
 
         #If the container does not exist, create it
