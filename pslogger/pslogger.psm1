@@ -3,7 +3,8 @@ class psLogEntry {
     [string]$source
     [string]$Message
     # [string] $dateTimeFormat
-    psLogEntry ([string]$source,[string]$message){
+    psLogEntry ([datetime]$datetime,[string]$source,[string]$message){
+        $this.datetime = $datetime
         $this.source = $source
         $this.Message = $message
         $this.datetime = Get-Date
@@ -82,12 +83,13 @@ class psLogger {
         $this.addMessage('pslogger',"Created log file at" + $this.lastoutputfilepath)
     }         
     addMessage($source,$message){
-        $newLogEntry = [psLogEntry]::new($source,$message)
+        $newLogDateTime = Get-Date
+        $newLogEntry = [psLogEntry]::new($newLogDateTime,$source,$message)
         if ($this.displayMessages){
             write-host $newLogEntry.datetime $newLogEntry.source $newLogEntry.Message
         }
         $this.LogMessages += $newLogEntry
-        [psLogEntry]::new($source,$message)
+        #[psLogEntry]::new($source,$message) #why was this here?
         switch ($this.saveMode){
             "append" {
                 $newLogEntry | export-csv -Path $this.lastoutputfilepath -NoTypeInformation -Append
