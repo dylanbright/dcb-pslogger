@@ -122,6 +122,7 @@ class psLogger {
             return (Get-AzStorageBlob -Context $context -Container $this.storageAccountContainer -Blob $this.lastoutputfilename).Name  
         } else {
             $this.addMessage('pslogger','Error contacting azure storage.')
+            return 'Error contacting azure storage.'
         }
     }
 }
